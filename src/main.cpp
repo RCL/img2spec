@@ -144,6 +144,7 @@ Device *gDevice = 0;
 #include "zxspectrumdevice.h"
 #include "zx3x64device.h"
 #include "zxhalftiledevice.h"
+#include "timexhicolordevice.h"
 #include "c64hiresdevice.h"
 #include "c64multicolordevice.h"
 
@@ -405,6 +406,9 @@ void loadworkspace(char *aFilename = nullptr)
 					break;
 				case 4:
 					gDevice = new C64MulticolorDevice;
+					break;
+				case 5:
+					gDevice = new TimexHiColorDevice;
 					break;
 				}
 				gDevice->readOptions(root);
@@ -1048,6 +1052,7 @@ int main(int aParamc, char**aParams)
 				if (ImGui::MenuItem("ZX Spectrum (16 colors)", 0, gDeviceId == 0, gDeviceId != 0)) { gDirty = 1; gDeviceId = 0; delete gDevice; gDevice = new ZXSpectrumDevice; }
 				if (ImGui::MenuItem("ZX Spectrum 3x64 mode", 0, gDeviceId == 1, gDeviceId != 1)) { gDirty = 1; gDeviceId = 1; delete gDevice; gDevice = new ZX3x64Device; }
 				if (ImGui::MenuItem("ZX Spectrum halftile mode", 0, gDeviceId == 2, gDeviceId != 2)) { gDirty = 1; gDeviceId = 2; delete gDevice; gDevice = new ZXHalfTileDevice; }
+				if (ImGui::MenuItem("Timex hi-color mode (8x1 attributes)", 0, gDeviceId == 5, gDeviceId != 5)) { gDirty = 1; gDeviceId = 5; delete gDevice; gDevice = new TimexHiColorDevice; }
 				ImGui::Separator();
 				if (ImGui::MenuItem("C64 hires mode (experimental)", 0, gDeviceId == 3, gDeviceId != 3)) { gDirty = 1; gDeviceId = 3; delete gDevice; gDevice = new C64HiresDevice; }
 				if (ImGui::MenuItem("C64 multicolor mode (experimental)", 0, gDeviceId == 4, gDeviceId != 4)) { gDirty = 1; gDeviceId = 4; delete gDevice; gDevice = new C64MulticolorDevice; }

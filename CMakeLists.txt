@@ -29,6 +29,7 @@ set(SOURCES
         src/zxspectrumdevice.h
         src/zx3x64device.h
         src/zxhalftiledevice.h
+        src/timexhicolordevice.h
         src/c64hiresdevice.h
         src/c64multicolordevice.h
 

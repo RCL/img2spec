@@ -61,6 +61,11 @@ order) is followed by attribute data. In case of non-standard cell sizes, the at
 data is bigger, but still in linear order - it is up to the code that uses the data to 
 figure out how to use it.
 
+The Timex hi-color device always uses 8x1 attribute cells (one standard attribute byte 
+per bitmap byte, as per the Timex/SCLD hi-color mode). Saved output is the bitmap 
+followed by the attribute bytes in linear order - at 256x192 with the bitmap in 
+spectrum screen order this is the standard 12288 byte .mlt file layout.
+
 If you prefer the data to be in linear order (not in spectrum screen order), you can 
 change that from the options.
 

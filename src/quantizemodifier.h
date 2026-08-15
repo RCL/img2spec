@@ -109,7 +109,7 @@ public:
 					float p = gBitmapProcFloat[i * 3 + c];
 					for (j = 0; j < mLevels; j++)
 					{
-						float d = abs(p - point[j]);
+						float d = fabsf(p - point[j]);
 						if (d < dist)
 						{
 							best = point[j];

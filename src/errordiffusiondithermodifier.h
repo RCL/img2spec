@@ -199,9 +199,9 @@ public:
 				float g = data[pos * 3 + 1] - ((approx >> 8) & 0xff) / 255.0f;
 				float b = data[pos * 3 + 0] - ((approx >> 16) & 0xff) / 255.0f;
 
-				if (abs(r) > mErrorClamp) r = (r > 0) ? mErrorClamp : -mErrorClamp;
-				if (abs(g) > mErrorClamp) g = (g > 0) ? mErrorClamp : -mErrorClamp;
-				if (abs(b) > mErrorClamp) b = (b > 0) ? mErrorClamp : -mErrorClamp;
+				if (fabsf(r) > mErrorClamp) r = (r > 0) ? mErrorClamp : -mErrorClamp;
+				if (fabsf(g) > mErrorClamp) g = (g > 0) ? mErrorClamp : -mErrorClamp;
+				if (fabsf(b) > mErrorClamp) b = (b > 0) ? mErrorClamp : -mErrorClamp;
 
 				int x, y;
 				for (y = 0; y < 3; y++)
