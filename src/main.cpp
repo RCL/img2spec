@@ -145,6 +145,7 @@ Device *gDevice = 0;
 #include "zx3x64device.h"
 #include "zxhalftiledevice.h"
 #include "timexhicolordevice.h"
+#include "zxnextdevice.h"
 #include "c64hiresdevice.h"
 #include "c64multicolordevice.h"
 
@@ -410,6 +411,15 @@ void loadworkspace(char *aFilename = nullptr)
 				case 5:
 					gDevice = new TimexHiColorDevice;
 					break;
+				case 6:
+					gDevice = new ZXNextDevice;
+					break;
+				}
+				if (!gDevice)
+				{
+					// unknown device id (workspace from a newer version?)
+					gDeviceId = 0;
+					gDevice = new ZXSpectrumDevice;
 				}
 				gDevice->readOptions(root);
 
@@ -738,6 +748,29 @@ void savescr(char *aFilename = nullptr)
     }
 }
 
+void savemlt(char *aFilename = nullptr)
+{
+    const char *FileName;
+
+    if(aFilename)
+        FileName = aFilename;
+    else if ((FileName = saveDialog("Save mlt",
+                                    "mlt (*.mlt)\0*.mlt\0"
+                                    "All Files (" ALL_FILES ")\0" ALL_FILES "\0\0",
+                                    "mlt")))
+        ;
+
+    if (FileName)
+    {
+        FILE * f = fopen(FileName, "wb");
+
+        gDevice->savemlt(f);
+
+        fclose(f);
+    }
+}
+
+
 void saveh(char *aFilename = 0)
 {
     const char *FileName;
@@ -937,6 +970,7 @@ int main(int aParamc, char**aParams)
 				case 'h': commandline_export = 2; break;
 				case 'i': commandline_export = 3; break;
 				case 's': commandline_export = 4; break;
+				case 'm': commandline_export = 5; break;
 				}
 				commandline_export_fn = i + 1;
 				i++;
@@ -964,6 +998,7 @@ int main(int aParamc, char**aParams)
 		case 2:	saveh(aParams[commandline_export_fn]); break;
 		case 3:	saveinc(aParams[commandline_export_fn]); break;
 		case 4:	savescr(aParams[commandline_export_fn]); break;
+		case 5:	savemlt(aParams[commandline_export_fn]); break;
 		}
 
 		done = true;
@@ -1005,6 +1040,7 @@ int main(int aParamc, char**aParams)
 				ImGui::Separator();
 				if (ImGui::MenuItem("Export .png")) { savepng(); }
 				if (ImGui::MenuItem("Export .scr (binary)")) { savescr(); }
+				if (gDevice->canSaveMlt()) if (ImGui::MenuItem("Export .mlt (binary)")) { savemlt(); }
 				if (ImGui::MenuItem("Export .h")) { saveh(); }
 				if (ImGui::MenuItem("Export .inc")) { saveinc(); }
 				ImGui::EndMenu();
@@ -1053,6 +1089,7 @@ int main(int aParamc, char**aParams)
 				if (ImGui::MenuItem("ZX Spectrum 3x64 mode", 0, gDeviceId == 1, gDeviceId != 1)) { gDirty = 1; gDeviceId = 1; delete gDevice; gDevice = new ZX3x64Device; }
 				if (ImGui::MenuItem("ZX Spectrum halftile mode", 0, gDeviceId == 2, gDeviceId != 2)) { gDirty = 1; gDeviceId = 2; delete gDevice; gDevice = new ZXHalfTileDevice; }
 				if (ImGui::MenuItem("Timex hi-color mode (8x1 attributes)", 0, gDeviceId == 5, gDeviceId != 5)) { gDirty = 1; gDeviceId = 5; delete gDevice; gDevice = new TimexHiColorDevice; }
+				if (ImGui::MenuItem("ZX Spectrum Next (Layer 2 / LoRes)", 0, gDeviceId == 6, gDeviceId != 6)) { gDirty = 1; gDeviceId = 6; delete gDevice; gDevice = new ZXNextDevice; }
 				ImGui::Separator();
 				if (ImGui::MenuItem("C64 hires mode (experimental)", 0, gDeviceId == 3, gDeviceId != 3)) { gDirty = 1; gDeviceId = 3; delete gDevice; gDevice = new C64HiresDevice; }
 				if (ImGui::MenuItem("C64 multicolor mode (experimental)", 0, gDeviceId == 4, gDeviceId != 4)) { gDirty = 1; gDeviceId = 4; delete gDevice; gDevice = new C64MulticolorDevice; }

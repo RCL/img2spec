@@ -11,6 +11,8 @@ public:
 	virtual void filter() = 0;
 	virtual int estimate_rgb(int c) = 0;
 	virtual void savescr(FILE * f) = 0;
+	virtual int canSaveMlt() { return 0; }
+	virtual void savemlt(FILE * f) {}
 	virtual void saveh(FILE * f) = 0;
 	virtual void saveinc(FILE * f) = 0;
 	virtual void attr_bitm() = 0;

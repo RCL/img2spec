@@ -30,6 +30,7 @@ set(SOURCES
         src/zx3x64device.h
         src/zxhalftiledevice.h
         src/timexhicolordevice.h
+        src/zxnextdevice.h
         src/c64hiresdevice.h
         src/c64multicolordevice.h
 

@@ -483,6 +483,19 @@ public:
 		fwrite(mSpectrumAttributes, (gDevice->mXRes / 8) * (gDevice->mYRes / 8) * attrib_size_multiplier, 1, f);
 	}
 
+	virtual int canSaveMlt()
+	{
+		return mOptCellSize == 3; // 8x1 attributes
+	}
+
+	virtual void savemlt(FILE * f)
+	{
+		// .mlt: bitmap in spectrum screen order followed by one attribute byte
+		// per bitmap byte in linear order (12288 bytes at 256x192)
+		fwrite(mSpectrumBitmap, (gDevice->mXRes / 8) * gDevice->mYRes, 1, f);
+		fwrite(mSpectrumAttributes, (gDevice->mXRes / 8) * gDevice->mYRes, 1, f);
+	}
+
 	virtual void saveh(FILE * f)
 	{
 		unsigned char *bm = mSpectrumBitmap;

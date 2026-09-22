@@ -66,6 +66,19 @@ per bitmap byte, as per the Timex/SCLD hi-color mode). Saved output is the bitma
 followed by the attribute bytes in linear order - at 256x192 with the bitmap in 
 spectrum screen order this is the standard 12288 byte .mlt file layout.
 
+When the active device uses 8x1 attributes (the Timex hi-color device, or the ZX 
+Spectrum device with the 8x1 cell size), "Export .mlt" is also available and always 
+writes the standard .mlt byte order (screen order bitmap, linear attributes) 
+regardless of the save order option. On the command line, use -m.
+
+The ZX Spectrum Next device saves a 512 byte palette block (256 entries in the nextreg 
+$44 byte pair format: %RRRGGGBB, %0000000B) followed by the bitmap in the mode's native 
+memory layout: Layer 2 256x192 row by row (49152 bytes, .nxi layout with the palette), 
+Layer 2 320x256 and 640x256 column by column (81920 bytes; in the 16 color mode the 
+high nibble is the left pixel), LoRes 128x96 linear (12288 bytes) and Radastan 128x96 
+nibble packed linear (6144 bytes). The palette can be optimized per image (median cut 
+in the 9-bit color space) or fixed to the hardware default.
+
 If you prefer the data to be in linear order (not in spectrum screen order), you can 
 change that from the options.
 
@@ -93,6 +106,7 @@ To save results on commandline, use the following flags:
 - -h headerfilename.h
 - -i incfilename.inc
 - -s scrfilename.scr
+- -m mltfilename.mlt
 
 Example:
 
